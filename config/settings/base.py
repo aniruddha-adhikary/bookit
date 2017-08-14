@@ -56,6 +56,7 @@ LOCAL_APPS = [
     'bookit.users.apps.UsersConfig',
     'bookit.bookings.apps.BookingsConfig',
     'bookit.providers.apps.ProvidersConfig',
+    'bookit.geo.apps.GeoConfig',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
