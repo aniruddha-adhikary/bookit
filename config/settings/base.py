@@ -53,9 +53,9 @@ THIRD_PARTY_APPS = [
 
 # Apps specific for this project go here.
 LOCAL_APPS = [
-    # custom users app
     'bookit.users.apps.UsersConfig',
-    # Your stuff: custom apps go here
+    'bookit.bookings.apps.BookingsConfig',
+    'bookit.providers.apps.ProvidersConfig',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
