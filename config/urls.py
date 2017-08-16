@@ -5,8 +5,14 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
 
+from bookings.views import CreateBookingView, BookingListViewCustomer
+from providers.views import ProviderServiceListView
+
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
+    url(r'^search/$', ProviderServiceListView.as_view(), name='search'),
+    url(r'^bookings/$', BookingListViewCustomer.as_view(), name='booking-list'),
+    url(r'^book/(?P<pk>\d+)/$', CreateBookingView.as_view(), name='booking-create'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
     # Django Admin, use {% url 'admin:index' %}

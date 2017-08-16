@@ -20,3 +20,8 @@ class ProviderService(models.Model):
     provider = models.ForeignKey(
         to='providers.Provider'
     )
+
+    def __str__(self):
+        return self.name
+
+

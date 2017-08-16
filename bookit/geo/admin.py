@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from geo.models import Area
+
+
+@admin.register(Area)
+class AreaAdmin(admin.ModelAdmin):
+    pass

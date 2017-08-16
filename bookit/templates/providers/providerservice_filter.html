@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div style="margin-top: 20px; width: 80%; margin-left: auto; margin-right: auto;">
+        {% crispy filter.form %}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Provider</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for service in object_list %}
+                    <tr>
+                        <td>{{ service.name }}</td>
+                        <td>{{ service.provider }}</td>
+                        <td>৳{{ service.price }}</td>
+                        <td><a href="{% url 'booking-create' pk=service.pk %}" class="btn btn-primary">Book</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+    $('#id_area').change(function() {
+        $('form').submit();
+    });
+    </script>
+{% endblock %}
