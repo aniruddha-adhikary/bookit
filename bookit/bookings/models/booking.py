@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django_fsm import FSMField
+from django_fsm import FSMField, transition
 from model_utils import Choices
 
 
@@ -35,3 +35,21 @@ class Booking(models.Model):
     last_updated = models.DateTimeField(
         auto_now=True
     )
+
+    @transition(status,
+                source='REQUESTED',
+                target='CANCELLED')
+    def cancel(self):
+        """Cancel request"""
+
+    @transition(status,
+                source='REQUESTED',
+                target='APPROVED')
+    def approve(self):
+        """Approve request"""
+
+    @transition(status,
+                source='REQUESTED',
+                target='REJECTED')
+    def reject(self):
+        """Reject request"""

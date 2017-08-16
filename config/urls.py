@@ -2,15 +2,16 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from django.views import defaults as default_views
 
-from bookings.views import CreateBookingView, BookingListViewCustomer, AllBookingListViewForProvider
+from bookings.views import CreateBookingView, BookingListViewCustomer, AllBookingListViewForProvider, BookingCancelView, \
+    BookingApproveView, BookingRejectView
 from providers.views import ProviderServiceFilterView, ProviderListView, ProviderCreateView, ProviderUpdateView, \
     ProviderServiceListView, ProviderServiceCreateView, ProviderServiceUpdateView, ProviderServiceDeleteView
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
+    url(r'^$', RedirectView.as_view(url='/search/'), name='home'),
     url(r'^search/$', ProviderServiceFilterView.as_view(), name='search'),
     url(r'^providers/(?P<pk>\d+)/services/$', ProviderServiceListView.as_view(), name='providerservice-list'),
     url(r'^providers/(?P<pk>\d+)/services/create/$', ProviderServiceCreateView.as_view(), name='providerservice-create'),
@@ -18,6 +19,10 @@ urlpatterns = [
     url(r'^providers/(?P<provider_pk>\d+)/services/(?P<pk>\d+)/delete/$', ProviderServiceDeleteView.as_view(), name='providerservice-delete'),
 
     url(r'^bookings/$', BookingListViewCustomer.as_view(), name='booking-list'),
+    url(r'^bookings/(?P<pk>\d+)/cancel/$', BookingCancelView.as_view(), name='booking-cancel'),
+    url(r'^bookings/(?P<pk>\d+)/approve/$', BookingApproveView.as_view(), name='booking-approve'),
+    url(r'^bookings/(?P<pk>\d+)/reject/$', BookingRejectView.as_view(), name='booking-reject'),
+
     url(r'^providers/(?P<pk>\d+)/bookings/$', AllBookingListViewForProvider.as_view(), name='booking-list-provider'),
     url(r'^book/(?P<pk>\d+)/$', CreateBookingView.as_view(), name='booking-create'),
 

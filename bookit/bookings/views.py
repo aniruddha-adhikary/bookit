@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.views import generic
 
 from bookings.forms import CreateBookingForm
@@ -58,3 +59,54 @@ class CreateBookingView(LoginRequiredMixin, generic.CreateView):
         ctx = super().get_context_data(**kwargs)
         ctx['service'] = get_object_or_404(ProviderService, pk=self.kwargs['pk'])
         return ctx
+
+
+
+class BookingStateChangeView(LoginRequiredMixin, generic.RedirectView):
+    state_change_method: str = None
+    reverse: str = 'booking-list'
+
+    @property
+    def reverse_kwargs(self):
+        return {}
+
+    def get_redirect_url(self, *args, **kwargs):
+
+        obj = get_object_or_404(Booking, pk=self.kwargs['pk'])
+
+        self.obj = obj
+
+        try:
+            getattr(obj, self.state_change_method)()
+            obj.save()
+        except:
+            messages.add_message(
+                self.request,
+                messages.ERROR,
+                extra_tags='alert alert-error',
+                message='Unable to process your request.'
+            )
+
+        return reverse(self.reverse, kwargs=self.reverse_kwargs)
+
+
+class BookingCancelView(BookingStateChangeView):
+    state_change_method = 'cancel'
+
+
+class BookingApproveView(BookingStateChangeView):
+    state_change_method = 'approve'
+    reverse = 'booking-list-provider'
+
+    @property
+    def reverse_kwargs(self):
+        return {'pk': self.obj.service.provider_id}
+
+
+class BookingRejectView(BookingStateChangeView):
+    state_change_method = 'reject'
+    reverse = 'booking-list-provider'
+
+    @property
+    def reverse_kwargs(self):
+        return {'pk': self.obj.service.provider_id}

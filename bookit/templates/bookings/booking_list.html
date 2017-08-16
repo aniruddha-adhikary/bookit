@@ -11,6 +11,7 @@
                     <th>Price</th>
                     <th>Appointment at</th>
                     <th>Status</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -21,6 +22,9 @@
                         <td>৳{{ booking.service.price }}</td>
                         <td>{{ booking.booked_for }}</td>
                         <td>{{ booking.status }}</td>
+                        <td>{% if booking.status == 'REQUESTED' %}
+                            <a href="{% url 'booking-cancel' pk=booking.pk %}" class="btn btn-danger">Cancel</a>
+                        {% endif %}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

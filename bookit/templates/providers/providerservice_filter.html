@@ -20,7 +20,7 @@
                 {% for service in object_list %}
                     <tr>
                         <td>{{ service.name }}</td>
-                        <td>{{ service.provider }}</td>
+                        <td>{{ service.provider }}, {{ service.provider.area }}</td>
                         <td>৳{{ service.price }}</td>
                         <td><a href="{% url 'booking-create' pk=service.pk %}" class="btn btn-primary">Book</a></td>
                     </tr>

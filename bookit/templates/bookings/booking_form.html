@@ -17,4 +17,12 @@
 
 {% block javascript %}
     {{ block.super }}
+    <script>
+        jQuery('#id_booked_for').datetimepicker({
+            format: 'Y-m-d H:i',
+            inline: true,
+            lang: 'en',
+            defaultDate: new Date()
+        });
+    </script>
 {% endblock %}

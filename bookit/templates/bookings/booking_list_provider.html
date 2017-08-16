@@ -1,7 +1,35 @@
-{% extends 'bookings/booking_list.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
     <h1>Bookings for "{{ provider.name }}, {{ provider.area }}"</h1>
     <br>
-    {{ block.super }}
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Service</th>
+                    <th>Appointment at</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for booking in object_list %}
+                    <tr>
+                        <td><h6><a href="{{ booking.booked_by.get_absolute_url }}">{{ booking.booked_by.name_or_username }}</a></h6></td>
+                        <td>{{ booking.service.name }}</td>
+                        <td>{{ booking.booked_for }}</td>
+                        <td>{{ booking.status }}</td>
+                        <td>{% if booking.status == 'REQUESTED' %}
+                            <a href="{% url 'booking-approve' pk=booking.pk %}" class="btn btn-success">Approve</a>
+                            <a href="{% url 'booking-reject' pk=booking.pk %}" class="btn btn-warning">Reject</a>
+                        {% endif %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
