@@ -11,6 +11,14 @@
                 <strong>Cost:</strong> ৳{{ service.price }}<br><br>
                 {% crispy form %}
             </div>
+            <div class="col-md-6">
+                <iframe
+                        width="450"
+                        height="450"
+                        frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCgLG-uTszqr3Cdl7-pE8ar2D69swyoBDU&q={{ service.provider.map_query | urlencode }}" allowfullscreen>
+                </iframe>
+            </div>
         </div>
     </div>
 {% endblock %}

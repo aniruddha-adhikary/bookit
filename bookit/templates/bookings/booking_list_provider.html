@@ -18,7 +18,9 @@
                 <tbody>
                 {% for booking in object_list %}
                     <tr>
-                        <td><h6><a href="{{ booking.booked_by.get_absolute_url }}">{{ booking.booked_by.name_or_username }}</a></h6></td>
+                        <td><h6><a
+                                href="{{ booking.booked_by.get_absolute_url }}">{{ booking.booked_by.name_or_username }}</a>
+                        </h6></td>
                         <td>{{ booking.service.name }}</td>
                         <td>{{ booking.booked_for }}</td>
                         <td>{{ booking.status }}</td>
@@ -32,4 +34,13 @@
             </table>
         </div>
     </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 {% endblock %}

@@ -22,7 +22,7 @@ class SearchForm(forms.Form):
 class ProviderForm(forms.ModelForm):
     class Meta:
         model = Provider
-        fields = ('name', 'area')
+        fields = ('name', 'area', 'map_query')
 
     def save(self, commit=True):
         self.instance.owner = self._owner

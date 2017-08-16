@@ -18,7 +18,8 @@ class ProviderService(models.Model):
     time_required = models.DurationField()
 
     provider = models.ForeignKey(
-        to='providers.Provider'
+        to='providers.Provider',
+        on_delete=models.PROTECT,
     )
 
     def __str__(self):

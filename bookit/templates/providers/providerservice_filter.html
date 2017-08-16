@@ -14,6 +14,7 @@
                     <th>Provider</th>
                     <th>Price</th>
                     <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -22,7 +23,13 @@
                         <td>{{ service.name }}</td>
                         <td>{{ service.provider }}, {{ service.provider.area }}</td>
                         <td>৳{{ service.price }}</td>
-                        <td><a href="{% url 'booking-create' pk=service.pk %}" class="btn btn-primary">Book</a></td>
+                        <td>
+
+                            {% if service.provider.map_query %}
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ service.provider.map_query | urlencode }}"
+                                   class="btn btn-info" target="_blank"><i class="fa fa-globe" aria-hidden="true"></i> Map</a></td>
+                            {% endif %}
+                        <td><a href="{% url 'booking-create' pk=service.pk %}" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Book</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -34,8 +41,8 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-    $('#id_area').change(function() {
-        $('form').submit();
-    });
+        $('#id_area').change(function () {
+            $('form').submit();
+        });
     </script>
 {% endblock %}

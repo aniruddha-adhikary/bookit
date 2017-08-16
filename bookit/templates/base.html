@@ -21,7 +21,7 @@
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/jquery.datetimepicker.min.css">
         <!-- Your stuff: Third-party CSS libraries go here -->
-
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- This file stores project-specific CSS -->
         <link href="{% static 'css/project.css' %}" rel="stylesheet">
 
@@ -43,16 +43,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'search' %}">Search</a>
+                    <a class="nav-link" href="{% url 'search' %}"><i class="fa fa-search" aria-hidden="true"></i> Search</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'booking-list' %}">My Bookings</a>
+                    <a class="nav-link" href="{% url 'booking-list' %}"><i class="fa fa-list" aria-hidden="true"></i> Bookings</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'provider-list-user' %}">My Providers</a>
+                    <a class="nav-link" href="{% url 'provider-list-user' %}"><i class="fa fa-building" aria-hidden="true"></i> Providers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'booking-validate-form' %}">Ticket Validation</a>
+                    <a class="nav-link" href="{% url 'booking-validate-form' %}"><i class="fa fa-check" aria-hidden="true"></i> Ticket Validation</a>
                 </li>
             </ul>
             <ul class="navbar-nav pull-right">

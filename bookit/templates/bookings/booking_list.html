@@ -23,10 +23,14 @@
                         <td>{{ booking.booked_for }}</td>
                         <td>{{ booking.status }}</td>
                         <td>{% if booking.status == 'REQUESTED' %}
-                            <a href="{% url 'booking-cancel' pk=booking.pk %}" class="btn btn-danger">Cancel</a>
+                            <a href="{% url 'booking-cancel' pk=booking.pk %}" class="btn btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</a>
                         {% endif %}
                         {% if booking.status == 'APPROVED' %}
-                            <a href="{% url 'booking-ticket' pk=booking.pk %}" class="btn btn-success">Get Ticket</a>
+                            <a href="{% url 'booking-ticket' pk=booking.pk %}" class="btn btn-success"><i class="fa fa-ticket" aria-hidden="true"></i> Ticket</a>
+                            {% if booking.service.provider.map_query %}
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ booking.service.provider.map_query | urlencode }}"
+                                   class="btn btn-info" target="_blank"><i class="fa fa-globe" aria-hidden="true"></i> Map</a>
+                            {% endif %}
                         {% endif %}</td>
                     </tr>
                 {% endfor %}

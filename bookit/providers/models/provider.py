@@ -25,6 +25,8 @@ class Provider(models.Model):
         null=True
     )
 
+    map_query = models.TextField(blank=True)
+
     def __str__(self):
         return self.name
 
