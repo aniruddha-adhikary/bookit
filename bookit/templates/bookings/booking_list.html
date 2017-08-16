@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-striped">
+            <table class="table">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -16,7 +16,7 @@
                 </thead>
                 <tbody>
                 {% for booking in object_list %}
-                    <tr>
+                    <tr class="{% if booking.status == 'APPROVED' %}table-success{% elif booking.status == 'REJECTED' %}table-danger{% elif booking.status == 'CANCELLED' %}table-warning{% endif %}">
                         <td>{{ booking.service.name }}</td>
                         <td>{{ booking.service.provider }}</td>
                         <td>৳{{ booking.service.price }}</td>
@@ -24,6 +24,9 @@
                         <td>{{ booking.status }}</td>
                         <td>{% if booking.status == 'REQUESTED' %}
                             <a href="{% url 'booking-cancel' pk=booking.pk %}" class="btn btn-danger">Cancel</a>
+                        {% endif %}
+                        {% if booking.status == 'APPROVED' %}
+                            <a href="{% url 'booking-ticket' pk=booking.pk %}" class="btn btn-success">Get Ticket</a>
                         {% endif %}</td>
                     </tr>
                 {% endfor %}

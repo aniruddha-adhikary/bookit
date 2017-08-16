@@ -1,0 +1,101 @@
+{% load staticfiles i18n %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}BookIt{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+
+    {% block css %}
+        <!-- Latest compiled and minified Bootstrap 4 Alpha 4 CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+              integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+              crossorigin="anonymous">
+
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/jquery.datetimepicker.min.css">
+        <!-- Your stuff: Third-party CSS libraries go here -->
+
+        <!-- This file stores project-specific CSS -->
+        <link href="{% static 'css/project.css' %}" rel="stylesheet">
+
+    {% endblock %}
+
+</head>
+
+<body>
+
+<div style="padding-top: 20px;"></div>
+
+<div class="container">
+
+    <div class="col-md-12">
+        <div class="text-center">
+            <h2>Booking for {{ booking.service.provider.name }}</h2>
+            <p>Appointment on: {{ booking.booked_for }}</p>
+            <p>Booked by: {{ booking.booked_by.name_or_username }}</p>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="text-center">
+            <img src="data:image/png;base64,{{ booking.ticket_set.get.generate_qrcode }}" alt="">
+            <br>
+            <p>Ticket ID:<br>{{ booking.ticket_set.get.uuid }}</p>
+            <br>
+            <h4>Total: ৳{{ booking.service.price }} *</h4>
+            <p class="small">* Exclusive of VAT, Taxes and Levies.</p>
+        </div>
+
+        <br><br>
+
+        <div class="text-left">
+            <h3>Please Remember</h3>
+            <ol>
+                <li>You are required to bring this ticket with you.</li>
+                <li>You are responsible for attending for your appointment in time.</li>
+                <li>BookIt, Inc is not responsible for any damage of property, asset or time of any sort.</li>
+            </ol>
+        </div>
+    </div>
+
+
+</div> <!-- /container -->
+
+{% block modal %}{% endblock modal %}
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% block javascript %}
+    <!-- Required by Bootstrap v4 Alpha 4 -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+            integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+            integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+            integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
+
+    <!-- Your stuff: Third-party javascript libraries go here -->
+
+    <!-- place project specific Javascript in this file -->
+
+    <script src="{% static 'js/project.js' %}"></script>
+
+
+{% endblock javascript %}
+</body>
+</html>
+

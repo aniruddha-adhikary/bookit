@@ -51,6 +51,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'provider-list-user' %}">My Providers</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'booking-validate-form' %}">Ticket Validation</a>
+                </li>
             </ul>
             <ul class="navbar-nav pull-right">
                 {% if request.user.is_authenticated %}

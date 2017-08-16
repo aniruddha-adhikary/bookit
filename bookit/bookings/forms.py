@@ -32,3 +32,14 @@ class CreateBookingForm(forms.ModelForm):
         return super().save(commit)
 
 
+class SearchTicketForm(forms.Form):
+    ticket_id = forms.UUIDField()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['ticket_id'].widget.attrs['placeholder'] = 'Ticket ID'
+        self.helper = FormHelper()
+        self.helper.form_method = 'get'
+        self.helper.form_action = '/tickets/validate/'
+        self.helper.form_show_labels = False
+
+        self.helper.add_input(Submit('submit', 'Search'))

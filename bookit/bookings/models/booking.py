@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -47,6 +48,9 @@ class Booking(models.Model):
                 target='APPROVED')
     def approve(self):
         """Approve request"""
+
+        Ticket = apps.get_model('bookings', 'Ticket')
+        Ticket(booking=self).save()
 
     @transition(status,
                 source='REQUESTED',

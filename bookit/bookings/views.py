@@ -4,8 +4,8 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
-from bookings.forms import CreateBookingForm
-from bookings.models import Booking
+from bookings.forms import CreateBookingForm, SearchTicketForm
+from bookings.models import Booking, Ticket
 from providers.models import ProviderService, Provider
 
 
@@ -14,7 +14,9 @@ class BookingListViewCustomer(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         user = self.request.user
-        return super().get_queryset().filter(booked_by=user).select_related('service', 'service__provider')
+        qs = super().get_queryset().filter(booked_by=user).select_related('service', 'service__provider')
+        qs = qs.order_by('status', '-booked_for')
+        return qs
 
 
 class AllBookingListViewForProvider(LoginRequiredMixin, UserPassesTestMixin, generic.ListView):
@@ -59,7 +61,6 @@ class CreateBookingView(LoginRequiredMixin, generic.CreateView):
         ctx = super().get_context_data(**kwargs)
         ctx['service'] = get_object_or_404(ProviderService, pk=self.kwargs['pk'])
         return ctx
-
 
 
 class BookingStateChangeView(LoginRequiredMixin, generic.RedirectView):
@@ -110,3 +111,38 @@ class BookingRejectView(BookingStateChangeView):
     @property
     def reverse_kwargs(self):
         return {'pk': self.obj.service.provider_id}
+
+
+class BookingTicketView(LoginRequiredMixin, UserPassesTestMixin, generic.DetailView):
+    model = Booking
+    context_object_name = 'booking'
+    template_name = 'bookings/booking_ticket.html'
+
+    def test_func(self):
+        return self.request.user == self.get_object().booked_by
+
+
+class BookingTicketValidateForm(LoginRequiredMixin, generic.FormView):
+    form_class = SearchTicketForm
+    template_name = 'bookings/booking_ticket_validate_form.html'
+
+
+class BookingTicketValidate(LoginRequiredMixin, UserPassesTestMixin, generic.TemplateView):
+    template_name = 'bookings/booking_ticket_validate.html'
+
+    def get_object(self, queryset=None):
+        try:
+            return Booking.objects.get(ticket__uuid=self.request.GET.get('ticket_id'))
+        except:
+            return None
+
+    def test_func(self):
+        try:
+            return self.request.user == self.get_object().service.provider.owner
+        except AttributeError:
+            return True
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['booking'] = self.get_object()
+        return ctx

@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, RedirectView
 from django.views import defaults as default_views
 
 from bookings.views import CreateBookingView, BookingListViewCustomer, AllBookingListViewForProvider, BookingCancelView, \
-    BookingApproveView, BookingRejectView
+    BookingApproveView, BookingRejectView, BookingTicketView, BookingTicketValidate, BookingTicketValidateForm
 from providers.views import ProviderServiceFilterView, ProviderListView, ProviderCreateView, ProviderUpdateView, \
     ProviderServiceListView, ProviderServiceCreateView, ProviderServiceUpdateView, ProviderServiceDeleteView
 
@@ -19,9 +19,12 @@ urlpatterns = [
     url(r'^providers/(?P<provider_pk>\d+)/services/(?P<pk>\d+)/delete/$', ProviderServiceDeleteView.as_view(), name='providerservice-delete'),
 
     url(r'^bookings/$', BookingListViewCustomer.as_view(), name='booking-list'),
+    url(r'^bookings/(?P<pk>\d+)/ticket/$', BookingTicketView.as_view(), name='booking-ticket'),
     url(r'^bookings/(?P<pk>\d+)/cancel/$', BookingCancelView.as_view(), name='booking-cancel'),
     url(r'^bookings/(?P<pk>\d+)/approve/$', BookingApproveView.as_view(), name='booking-approve'),
     url(r'^bookings/(?P<pk>\d+)/reject/$', BookingRejectView.as_view(), name='booking-reject'),
+    url(r'^tickets/validate/$', BookingTicketValidate.as_view(), name='booking-validate'),
+    url(r'^validate/$', BookingTicketValidateForm.as_view(), name='booking-validate-form'),
 
     url(r'^providers/(?P<pk>\d+)/bookings/$', AllBookingListViewForProvider.as_view(), name='booking-list-provider'),
     url(r'^book/(?P<pk>\d+)/$', CreateBookingView.as_view(), name='booking-create'),
