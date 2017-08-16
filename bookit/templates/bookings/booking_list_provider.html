@@ -1,0 +1,7 @@
+{% extends 'bookings/booking_list.html' %}
+
+{% block content %}
+    <h1>Bookings for "{{ provider.name }}, {{ provider.area }}"</h1>
+    <br>
+    {{ block.super }}
+{% endblock %}

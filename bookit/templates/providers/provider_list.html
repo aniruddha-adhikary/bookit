@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-right">
+                <a href="{% url 'provider-create' %}" class="btn btn-success">Register Provider</a>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th># of Services</th>
+                    <th># of Bookings</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for provider in object_list %}
+                    <tr>
+                        <td>{{ provider.name }}</td>
+                        <td>{{ provider.area }}</td>
+                        <td>{{ provider.providerservice_set.count }}</td>
+                        <td>{{ provider.get_bookings.count }}</td>
+                        <td>
+                            <a href="{% url 'booking-list-provider' pk=provider.pk %}" class="btn btn-primary">Bookings</a>
+                            <a href="{% url 'providerservice-list' pk=provider.pk %}" class="btn btn-info">Services</a>
+                            <a href="{% url 'provider-update' pk=provider.pk %}" class="btn btn-warning">Edit</a>
+                            <a href="" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

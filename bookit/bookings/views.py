@@ -16,6 +16,22 @@ class BookingListViewCustomer(LoginRequiredMixin, generic.ListView):
         return super().get_queryset().filter(booked_by=user).select_related('service', 'service__provider')
 
 
+class AllBookingListViewForProvider(LoginRequiredMixin, UserPassesTestMixin, generic.ListView):
+    model = Booking
+    template_name = 'bookings/booking_list_provider.html'
+
+    def test_func(self):
+        return self.request.user == get_object_or_404(Provider, pk=self.kwargs['pk']).owner
+
+    def get_queryset(self):
+        return Booking.objects.filter(service__provider=get_object_or_404(Provider, pk=self.kwargs['pk']))
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['provider'] = get_object_or_404(Provider, pk=self.kwargs['pk'])
+        return ctx
+
+
 class CreateBookingView(LoginRequiredMixin, generic.CreateView):
     model = Booking
     form_class = CreateBookingForm
@@ -28,12 +44,14 @@ class CreateBookingView(LoginRequiredMixin, generic.CreateView):
         kwargs['service'] = get_object_or_404(ProviderService, pk=self.kwargs['pk'])
         return kwargs
 
-    def post(self, request, *args, **kwargs):
-        resp = super().post(request, *args, **kwargs)
+    def form_valid(self, form):
+        resp = super().form_valid(form)
+
         messages.add_message(self.request,
                              messages.SUCCESS,
                              "Your booking has been sent for approval",
                              extra_tags='alert alert-success')
+
         return resp
 
     def get_context_data(self, **kwargs):

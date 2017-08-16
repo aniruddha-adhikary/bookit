@@ -1,5 +1,12 @@
+from django.apps import apps
 from django.conf import settings
 from django.db import models
+
+from bookings.models import Booking
+
+
+class ProviderManager(models.Manager):
+    pass
 
 
 class Provider(models.Model):
@@ -21,3 +28,7 @@ class Provider(models.Model):
     def __str__(self):
         return self.name
 
+    objects = ProviderManager()
+
+    def get_bookings(self):
+        return Booking.objects.filter(service__provider=self)

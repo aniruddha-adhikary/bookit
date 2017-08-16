@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-right">
+                <a href="{% url 'providerservice-create' pk=pk %}" class="btn btn-success">Add Service</a>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Duration</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for service in object_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ service.name }}</td>
+                        <td>{{ service.time_required }}</td>
+                        <td>৳{{ service.price }}</td>
+                        <td>
+                            <a href="{% url 'providerservice-update' pk=service.pk provider_pk=service.provider_id %}" class="btn btn-warning">Edit</a>
+                            <a href="{% url 'providerservice-delete' pk=service.pk provider_pk=service.provider_id %}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
