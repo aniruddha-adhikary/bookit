@@ -1,36 +1,76 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load humanize %}
 {% block title %}User: {{ object.username }}{% endblock %}
 
 {% block content %}
-<div class="container">
+    <div class="container">
 
-  <div class="row">
-    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
 
-      <h2>{{ object.username }}</h2>
-      {% if object.name %}
-        <p>{{ object.name }}</p>
-      {% endif %}
+                <h2>{{ object.username }}</h2>
+                {% if object.name %}
+                    <p>{{ object.name }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if object == request.user %}
+            <!-- Action buttons -->
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
+                    <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
+                    <!-- Your Stuff: Custom user template urls -->
+                </div>
+
+            </div>
+            <!-- End Action buttons -->
+        {% endif %}
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Service History</h3>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Provider</th>
+                        <th>Appointment at</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for booking in object.booking_set.all %}
+                        <tr class="{% if booking.status == 'APPROVED' %}table-success{% elif booking.status == 'REJECTED' %}table-danger{% elif booking.status == 'CANCELLED' %}table-warning{% endif %}">
+                            <td>{{ booking.service.provider }}</td>
+                            <td>{{ booking.booked_for | naturaltime }}</td>
+                            <td>{{ booking.status }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-block bg-faded">
+                    <table class="table table-sm table-hover">
+                        <tr>
+                            <td>Cancellation Rate</td>
+                            <td>{{ cancellation_rate }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Rejection Rate</td>
+                            <td>{{ rejection_rate }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Acceptance Rate</td>
+                            <td>{{ acceptance_rate }}%</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-
-{% if object == request.user %}
-<!-- Action buttons -->
-<div class="row">
-
-  <div class="col-sm-12">
-    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
-    <!-- Your Stuff: Custom user template urls -->
-  </div>
-
-</div>
-<!-- End Action buttons -->
-{% endif %}
-
-
-</div>
 {% endblock content %}
 

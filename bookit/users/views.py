@@ -12,6 +12,15 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        bookings = self.get_object().booking_set.all()
+        count = bookings.exclude(status='REQUESTED').count()
+        ctx['cancellation_rate'] = '%.2f' % (bookings.filter(status='CANCELLED').count() / count * 100)
+        ctx['rejection_rate'] = '%.2f' % (bookings.filter(status='REJECTED').count() / count * 100)
+        ctx['acceptance_rate'] = '%.2f' % (bookings.filter(status='APPROVED').count() / count * 100)
+        return ctx
+
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
     permanent = False

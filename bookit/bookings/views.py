@@ -27,7 +27,9 @@ class AllBookingListViewForProvider(LoginRequiredMixin, UserPassesTestMixin, gen
         return self.request.user == get_object_or_404(Provider, pk=self.kwargs['pk']).owner
 
     def get_queryset(self):
-        return Booking.objects.filter(service__provider=get_object_or_404(Provider, pk=self.kwargs['pk']))
+        qs = Booking.objects.filter(service__provider=get_object_or_404(Provider, pk=self.kwargs['pk']))
+        qs = qs.order_by('-status', '-booked_for')
+        return qs
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
